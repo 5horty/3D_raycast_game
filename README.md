@@ -30,7 +30,6 @@ this method just is a Defualt init method that provides Defualt valued like 1000
 it also sets the frame_buf to black as 0 
 
 #### Screen::clear
-
 this loops over everthing from 0 to self.height(1000)
 it then binds a variable colour to the result of an if else statment
 if y is less than self.height / 2 (500) then binds colour to blue using rgb_from_u8
@@ -84,7 +83,15 @@ fov the field of view
 
 #### Player::Defualt
 
+sets Defualt for the player just a Defualt init method agian 
+so sets cords to 3 by 3 just cause when i started i could see the raycasting here before movement was implementated
+angle is 0.0 
+fov is pie/ 3 so 60 degrees
 
+#### Player::move_forward
+
+this method takes in a distance and a immutable ref to the world stuct bcs it just has to read it nothing else
+it calculates the new x and y cords by adding the distance taken in and mutipling the cos of the angle 
 
 
 
