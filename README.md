@@ -49,6 +49,43 @@ calculates index using the earlier formula then sets index to the colour taken a
 takes in a x cord and the y axis start position and its end position and the colour
 then loops from y start to end calling draw_pixel which then creates a column very useful for raycasting 
 
+## world_file
+
+### World struct
+
+the World struct has a width, height and tiles fields the width and height differ from the screen as they are the measurements of the map aka tiles named pretty badly but whatever
+tiles is just a vector of u8s as they are only 1 or 0s so no need for anything else
+1s are for walls and 0s are for nothing 
+also the layout of tiles is bcs of my configs in nvim and how it formats rust code its good most of the time but not perfect
+as its 10 by 10 but represented weirdly 
+
+#### World::Defualt
+
+just a Defualt init method like i said 10 by 10 and then the tiles map is jsut a cage basically a opening in the middle and walls all around
+
+#### World::get_tiles
+
+its returns the tile bases on and index of coordinates
+agian as i used a 1D array i have to convert it so the same forumale is used y * width + x is used to index the array and return the tile at that location
+
+#### World::is_wall
+
+this is a collision dectection method all it does is call the get_tile method and if that returns 1 then the is_wall method returns true else false
+
+## player_file
+
+### Player struct
+
+x_cord, y_cords, angle and fov fields 
+x and y cords used for positioning
+players facing direction in radians
+fov the field of viewin radians
+fov the field of view
+
+#### Player::Defualt
+
+
+
 
 
 
