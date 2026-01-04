@@ -15,16 +15,10 @@ pub fn render(player: &Player, screen: &mut Screen, world: &World) {
 
         let wall_height = (screen_height as f32 / corrected_distance) as isize;
 
-        let mut y_start = (screen_height as isize / 2) - (wall_height / 2);
+        let y_start = ((screen_height as isize / 2) - (wall_height / 2)).max(0) as usize;
 
-        let mut y_end = (screen_height as isize / 2) + (wall_height / 2);
-
-        if y_start < 0 {
-            y_start = 0;
-        }
-        if y_end > screen_height as isize {
-            y_end = screen_height as isize;
-        }
+        let y_end =
+            ((screen_height as isize / 2) + (wall_height / 2)).min(screen_height as isize) as usize;
 
         screen.draw_columns(column, y_start as usize, y_end as usize, 0x595858);
     }

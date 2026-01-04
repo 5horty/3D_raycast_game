@@ -10,45 +10,74 @@ pub struct Sprite {
 impl Sprite {
     pub fn defualt() -> Self {
         Self {
-            x_cords: 5.0,
-            y_cords: 5.0,
-            texture: vec![0x00FF00; 50 * 50], //green blob,
-            width: 50,
-            height: 50,
+            x_cords: 1.0,
+            y_cords: 1.0,
+            texture: vec![0xFFFFFF; 100 * 100], //green blob,
+            width: 100,
+            height: 100,
         }
     }
-    pub fn sprite_projection(&mut self, player: &Player, screen: &mut Screen) {
+    pub fn sprite_projection(&self, player: &Player, screen: &mut Screen) {
         let dx = self.x_cords - player.x_cord;
         let dy = self.y_cords - player.y_cord;
-        //angle to sprte
+
         let angle_to_sprite = dy.atan2(dx);
+        let mut relative_angle = angle_to_sprite - player.angle;
 
-        //distance to player
-        let distance = (dx * dx + dy * dy).sqrt();
+        // normalize to [-π, π]
+        while relative_angle < -std::f32::consts::PI {
+            relative_angle += 2.0 * std::f32::consts::PI;
+        }
+        while relative_angle > std::f32::consts::PI {
+            relative_angle -= 2.0 * std::f32::consts::PI;
+        }
 
-        let relative_angle = angle_to_sprite - player.angle;
+        if relative_angle.abs() > player.fov / 2.0 {
+            return; // outside FOV
+        }
+
+        let distance = (dx * dx + dy * dy).sqrt().max(0.1); // avoid divide by zero
 
         let screen_x = ((relative_angle / player.fov) + 0.5) * screen.width as f32;
 
-        //distance scalling
         let sprite_height_on_screen = (screen.height as f32 / distance) as usize;
-        let sprite_width_on_screen = sprite_height_on_screen; // its a square
-        self.draw_sprite(screen, screen_x);
+        let sprite_width_on_screen = sprite_height_on_screen;
+
+        self.draw_sprite(
+            screen,
+            screen_x,
+            sprite_width_on_screen,
+            sprite_height_on_screen,
+        );
     }
+    pub fn draw_sprite(
+        &self,
+        screen: &mut Screen,
+        screen_x: f32,
+        width_on_screen: usize,
+        height_on_screen: usize,
+    ) {
+        let start_x = screen_x as isize - (width_on_screen as isize / 2);
+        let start_y = screen.height as isize / 2 - (height_on_screen as isize / 2);
 
-    pub fn draw_sprite(&self, screen: &mut Screen, screen_x: f32) {
-        let start_x = screen_x as isize - (self.width as isize / 2);
-        let start_y = screen.height as isize / 2 - (self.height as isize / 2);
+        for y in 0..height_on_screen {
+            let pixel_y = start_y + y as isize;
+            if pixel_y < 0 || pixel_y >= screen.height as isize {
+                continue;
+            }
 
-        for y in 0..self.height {
-            for x in 0..self.width {
-                let tex_index = y * self.width + x;
+            for x in 0..width_on_screen {
+                let pixel_x = start_x + x as isize;
+                if pixel_x < 0 || pixel_x >= screen.width as isize {
+                    continue;
+                }
+
+                let tex_x = x * self.width / width_on_screen;
+                let tex_y = y * self.height / height_on_screen;
+                let tex_index = tex_y * self.width + tex_x;
+
                 let colour = self.texture[tex_index];
-                screen.draw_pixel(
-                    (start_x + x as isize) as usize,
-                    (start_y + y as isize) as usize,
-                    colour,
-                );
+                screen.draw_pixel(pixel_x as usize, pixel_y as usize, colour);
             }
         }
     }

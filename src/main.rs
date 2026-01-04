@@ -55,11 +55,11 @@ fn main() {
         // clear screen
         screen.clear();
 
-        //draw sprite
-        sprite.sprite_projection(&player, &mut screen);
-
         // render the scene from players pov
         render(&player, &mut screen, &world);
+
+        //draw sprite
+        sprite.sprite_projection(&player, &mut screen);
 
         // display buffer
         window

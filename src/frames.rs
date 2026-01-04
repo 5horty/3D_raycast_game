@@ -15,11 +15,15 @@ impl Screen {
         }
     }
     pub fn clear(&mut self) {
-        for i in 0..self.frame_buffer.len() / 2 {
-            self.frame_buffer[i] = from_u8_rgb(0, 127, 255);
-        }
-        for i in self.frame_buffer.len() / 2..self.frame_buffer.len() {
-            self.frame_buffer[i] = from_u8_rgb(0, 255, 127);
+        for y in 0..self.height {
+            let color = if y < self.height / 2 {
+                from_u8_rgb(0, 127, 255) // sky
+            } else {
+                from_u8_rgb(0, 255, 127) // ground
+            };
+            for x in 0..self.width {
+                self.frame_buffer[y * self.width + x] = color;
+            }
         }
     }
 
