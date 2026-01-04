@@ -37,7 +37,7 @@ fn main() {
     // world and player
     let world = World::defualt();
     let mut player = Player::defualt();
-    let mut sprite = Sprite::defualt();
+    let sprite = Sprite::defualt();
 
     // main loop
     while window.is_open() {
