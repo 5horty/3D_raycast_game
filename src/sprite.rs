@@ -10,8 +10,8 @@ pub struct Sprite {
 impl Sprite {
     pub fn defualt() -> Self {
         Self {
-            x_cords: 1.0,
-            y_cords: 1.0,
+            x_cords: 5.0,
+            y_cords: 5.0,
             texture: vec![0xFFFFFF; 100 * 100], //green blob,
             width: 100,
             height: 100,

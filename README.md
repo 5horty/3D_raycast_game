@@ -95,6 +95,29 @@ it calculates the new x and y cords by adding the distance taken in and mutiplin
 
 
 
+## sprite_file
+
+### Sprite struct
+
+x_cord , y_cord same as player width and height of sprite in pixels and then a vec of u32 so colours
+
+#### Sprite::Defualt 
+
+the Defualt init sets cords to 5, 5 so middle of map
+sets the vec to 0xFFFFFF so white blob and 100 * 100 long vector
+then width and height is set to 100 so same as walls perfect square
+
+#### Sprite::sprite_projection
+
+how big should the sprite be in relation to the players location 
+
+dx is difference in sprite x to player x 
+dy is difference in sprite y to player y 
+
+
+
+
+
 
 
 
