@@ -1,7 +1,6 @@
 use std::time::Duration;
 
 use crate::player::Player;
-use crate::world;
 use crate::world::World;
 use minifb::Key;
 use minifb::Window;

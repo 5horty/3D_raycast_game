@@ -12,7 +12,7 @@ impl Sprite {
         Self {
             x_cords: 5.0,
             y_cords: 5.0,
-            texture: vec![0xFFFFFF; 100 * 100], //green blob,
+            texture: vec![0xFFFFFF; 100 * 100], //green white,
             width: 100,
             height: 100,
         }
