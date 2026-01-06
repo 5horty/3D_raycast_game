@@ -1,7 +1,7 @@
 use crate::{frames::Screen, player::Player};
 pub struct Sprite {
-    x_cords: f32,
-    y_cords: f32,
+    pub x_cords: f32,
+    pub y_cords: f32,
     texture: Vec<u32>,
     width: usize,
     height: usize,
@@ -15,6 +15,15 @@ impl Sprite {
             texture: vec![0xFFFFFF; 100 * 100], //green white,
             width: 100,
             height: 100,
+        }
+    }
+    pub fn new(x_cords: f32, y_cords: f32, texture: Vec<u32>, width: usize, height: usize) -> Self {
+        Self {
+            x_cords,
+            y_cords,
+            texture,
+            width,
+            height,
         }
     }
     pub fn sprite_projection(&self, player: &Player, screen: &mut Screen) {

@@ -25,7 +25,7 @@ pub fn render(player: &Player, screen: &mut Screen, world: &World) {
 }
 
 fn cast_ray(player: &Player, world: &World, angle: f32) -> f32 {
-    let step_size = 0.05;
+    let step_size = 0.005;
     let mut distance = 0.0;
     loop {
         let ray_x = player.x_cord + distance * angle.cos();

@@ -1,4 +1,6 @@
+mod enemies;
 mod frames;
+mod hitscan;
 mod movement;
 mod player;
 mod ray;
