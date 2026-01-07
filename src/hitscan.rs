@@ -24,8 +24,7 @@ pub fn ray_hits_enemy(player: &Player, enemies: &[Enemy], max_distance: f32) -> 
         while relative_angle > std::f32::consts::PI {
             relative_angle -= 2.0 * std::f32::consts::PI;
         }
-        const GUN_CONE: f32 = 0.03;
-        if relative_angle.abs() > GUN_CONE {
+        if relative_angle.abs() > (eneme.hit_radius / distance) {
             continue;
         }
         if distance < closet_distance {
@@ -37,12 +36,16 @@ pub fn ray_hits_enemy(player: &Player, enemies: &[Enemy], max_distance: f32) -> 
     closet_enemy
 }
 pub fn shoot(player: &Player, enemies: &mut Vec<Enemy>, damage: i32) {
-    if let Some(enemy_index) = ray_hits_enemy(player, enemies, 10.0) {
+    if let Some(enemy_index) = ray_hits_enemy(player, enemies, 5.0) {
         let enemy = &mut enemies[enemy_index];
-        enemy.health -= damage;
+        println!("shoots");
+        enemy.take_damage(damage);
 
         if !enemy.is_alive() {
             println!("enemies dead");
         }
     }
+}
+pub fn remove_dead_enemies(enemies: &mut Vec<Enemy>) {
+    enemies.retain(|e| e.is_alive());
 }

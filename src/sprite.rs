@@ -98,11 +98,6 @@ impl Sprite {
                     continue;
                 }
 
-                let tex_x = x * self.width / width_on_screen;
-                let tex_y = y * self.height / height_on_screen;
-                let tex_index = tex_y * self.width + tex_x;
-
-                let colour = self.texture[tex_index];
                 screen.draw_pixel(pixel_x as usize, pixel_y as usize, colour);
             }
         }

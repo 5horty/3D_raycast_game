@@ -1,3 +1,4 @@
+mod crosshair;
 mod enemies;
 mod frames;
 mod hitscan;
@@ -8,15 +9,16 @@ mod sprite;
 mod utils;
 mod world;
 
+use crate::crosshair::draw_crosshair;
 use crate::enemies::Enemy;
 use crate::frames::Screen;
-use crate::hitscan::shoot;
+use crate::hitscan::{remove_dead_enemies, shoot};
 use crate::player::Player;
 use crate::ray::render;
 use crate::sprite::Sprite;
 use crate::utils::update_enemies;
 use crate::world::World;
-use minifb::{Key, Window, WindowOptions};
+use minifb::{Key, KeyRepeat, Window, WindowOptions};
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 
@@ -58,7 +60,7 @@ fn main() {
             &world,
             &Duration::from_secs_f32(delta_time),
         );
-        if window.is_key_down(Key::Space) {
+        if window.is_key_pressed(Key::Space, KeyRepeat::No) {
             shoot(&player, &mut enemy, 10);
         }
 
@@ -74,6 +76,8 @@ fn main() {
             i.sprite.sprite_projection(&player, &mut screen);
         }
         update_enemies(&mut enemy, delta_time);
+        remove_dead_enemies(&mut enemy);
+        draw_crosshair(&mut screen, &player);
 
         // display buffer
         window
