@@ -1,20 +1,48 @@
-use crate::enemies::{self, Enemy};
-use crate::player::{self, Player};
-use crate::world::{self, World};
+use crate::enemies::Enemy;
+use crate::player::Player;
 
-pub fn ray_hits_enemy(
-    player: &Player,
-    world: &World,
-    enemies: &Enemy,
-    max_distance: f32,
-) -> Option<f32> {
-    let dx = enemies.sprite.x_cords - player.x_cord;
-    let dy = enemies.sprite.y_cords - player.y_cord;
+pub fn ray_hits_enemy(player: &Player, enemies: &[Enemy], max_distance: f32) -> Option<usize> {
+    let mut closet_enemy: Option<usize> = None;
+    let mut closet_distance = f32::INFINITY;
+    for (i, eneme) in enemies.iter().enumerate() {
+        let dx = eneme.sprite.x_cords - player.x_cord;
+        let dy = eneme.sprite.y_cords - player.y_cord;
 
-    let angle_to_enemy = dy.atan2(dx);
+        let distance = (dx * dx + dy * dy).sqrt().max(0.1); // avoid divide by zero
 
-    let mut relative_angle = angle_to_enemy - player.angle;
+        if distance > max_distance {
+            continue;
+        }
 
-    todo!()
+        let angle_to_enemy = dy.atan2(dx);
+
+        let mut relative_angle = angle_to_enemy - player.angle;
+
+        while relative_angle < -std::f32::consts::PI {
+            relative_angle += 2.0 * std::f32::consts::PI;
+        }
+        while relative_angle > std::f32::consts::PI {
+            relative_angle -= 2.0 * std::f32::consts::PI;
+        }
+        const GUN_CONE: f32 = 0.03;
+        if relative_angle.abs() > GUN_CONE {
+            continue;
+        }
+        if distance < closet_distance {
+            closet_distance = distance;
+            closet_enemy = Some(i);
+        }
+    }
+
+    closet_enemy
 }
-pub fn shoot(player: &Player, enemies: &mut Vec<Enemy>, damage: i32) {}
+pub fn shoot(player: &Player, enemies: &mut Vec<Enemy>, damage: i32) {
+    if let Some(enemy_index) = ray_hits_enemy(player, enemies, 10.0) {
+        let enemy = &mut enemies[enemy_index];
+        enemy.health -= damage;
+
+        if !enemy.is_alive() {
+            println!("enemies dead");
+        }
+    }
+}

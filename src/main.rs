@@ -8,12 +8,15 @@ mod sprite;
 mod utils;
 mod world;
 
+use crate::enemies::Enemy;
 use crate::frames::Screen;
+use crate::hitscan::shoot;
 use crate::player::Player;
 use crate::ray::render;
 use crate::sprite::Sprite;
+use crate::utils::update_enemies;
 use crate::world::World;
-use minifb::{Window, WindowOptions};
+use minifb::{Key, Window, WindowOptions};
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 
@@ -40,6 +43,8 @@ fn main() {
     let world = World::defualt();
     let mut player = Player::defualt();
     let sprite = Sprite::defualt();
+    //enemies
+    let mut enemy = vec![Enemy::defualt()];
 
     // main loop
     while window.is_open() {
@@ -53,6 +58,9 @@ fn main() {
             &world,
             &Duration::from_secs_f32(delta_time),
         );
+        if window.is_key_down(Key::Space) {
+            shoot(&player, &mut enemy, 10);
+        }
 
         // clear screen
         screen.clear();
@@ -62,6 +70,10 @@ fn main() {
 
         //draw sprite
         sprite.sprite_projection(&player, &mut screen);
+        for i in enemy.iter() {
+            i.sprite.sprite_projection(&player, &mut screen);
+        }
+        update_enemies(&mut enemy, delta_time);
 
         // display buffer
         window

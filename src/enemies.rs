@@ -7,7 +7,7 @@ pub struct Enemy {
 impl Enemy {
     pub fn defualt() -> Self {
         Self {
-            sprite: Sprite::defualt(),
+            sprite: Sprite::new(8.0, 8.0, vec![0x000000; 100 * 100], 100, 100, 0.0),
             health: 100,
         }
     }

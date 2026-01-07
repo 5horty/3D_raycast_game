@@ -2,9 +2,10 @@ use crate::{frames::Screen, player::Player};
 pub struct Sprite {
     pub x_cords: f32,
     pub y_cords: f32,
-    texture: Vec<u32>,
+    pub texture: Vec<u32>,
     width: usize,
     height: usize,
+    pub damage_timer: f32,
 }
 
 impl Sprite {
@@ -15,15 +16,24 @@ impl Sprite {
             texture: vec![0xFFFFFF; 100 * 100], //green white,
             width: 100,
             height: 100,
+            damage_timer: 0.0,
         }
     }
-    pub fn new(x_cords: f32, y_cords: f32, texture: Vec<u32>, width: usize, height: usize) -> Self {
+    pub fn new(
+        x_cords: f32,
+        y_cords: f32,
+        texture: Vec<u32>,
+        width: usize,
+        height: usize,
+        damage_timer: f32,
+    ) -> Self {
         Self {
             x_cords,
             y_cords,
             texture,
             width,
             height,
+            damage_timer,
         }
     }
     pub fn sprite_projection(&self, player: &Player, screen: &mut Screen) {
@@ -52,11 +62,17 @@ impl Sprite {
         let sprite_height_on_screen = (screen.height as f32 / distance) as usize;
         let sprite_width_on_screen = sprite_height_on_screen;
 
+        let colour = if self.damage_timer > 0.0 {
+            0xFF0000
+        } else {
+            0x00000
+        };
         self.draw_sprite(
             screen,
             screen_x,
             sprite_width_on_screen,
             sprite_height_on_screen,
+            colour,
         );
     }
     pub fn draw_sprite(
@@ -65,6 +81,7 @@ impl Sprite {
         screen_x: f32,
         width_on_screen: usize,
         height_on_screen: usize,
+        colour: u32,
     ) {
         let start_x = screen_x as isize - (width_on_screen as isize / 2);
         let start_y = screen.height as isize / 2 - (height_on_screen as isize / 2);
