@@ -1,4 +1,5 @@
 use crate::sprite::Sprite;
+use crate::textures::basic_enemy_texture;
 
 pub struct Enemy {
     pub sprite: Sprite,
@@ -8,7 +9,7 @@ pub struct Enemy {
 impl Enemy {
     pub fn defualt() -> Self {
         Self {
-            sprite: Sprite::new(8.0, 8.0, vec![0x000000; 100 * 100], 100, 100, 0.0),
+            sprite: Sprite::new(8.0, 8.0, basic_enemy_texture(), 100, 100, 0.0),
             health: 100,
             hit_radius: 0.5,
         }

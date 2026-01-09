@@ -6,6 +6,7 @@ mod movement;
 mod player;
 mod ray;
 mod sprite;
+mod textures;
 mod utils;
 mod world;
 

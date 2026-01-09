@@ -1,4 +1,5 @@
 use crate::{frames::Screen, player::Player};
+const MAGIC_COLOUR: u32 = 0xFFFFFF;
 pub struct Sprite {
     pub x_cords: f32,
     pub y_cords: f32,
@@ -13,7 +14,7 @@ impl Sprite {
         Self {
             x_cords: 5.0,
             y_cords: 5.0,
-            texture: vec![0xFFFFFF; 100 * 100], //green white,
+            texture: vec![0xFF0000; 100 * 100], //green white,
             width: 100,
             height: 100,
             damage_timer: 0.0,
@@ -62,17 +63,11 @@ impl Sprite {
         let sprite_height_on_screen = (screen.height as f32 / distance) as usize;
         let sprite_width_on_screen = sprite_height_on_screen;
 
-        let colour = if self.damage_timer > 0.0 {
-            0xFF0000
-        } else {
-            0x00000
-        };
         self.draw_sprite(
             screen,
             screen_x,
             sprite_width_on_screen,
             sprite_height_on_screen,
-            colour,
         );
     }
     pub fn draw_sprite(
@@ -81,7 +76,6 @@ impl Sprite {
         screen_x: f32,
         width_on_screen: usize,
         height_on_screen: usize,
-        colour: u32,
     ) {
         let start_x = screen_x as isize - (width_on_screen as isize / 2);
         let start_y = screen.height as isize / 2 - (height_on_screen as isize / 2);
@@ -98,7 +92,18 @@ impl Sprite {
                     continue;
                 }
 
-                screen.draw_pixel(pixel_x as usize, pixel_y as usize, colour);
+                let tex_x = x * self.width / width_on_screen;
+                let tex_y = y * self.width / height_on_screen;
+                let tex_index = tex_y * self.width + tex_x;
+
+                let colour = if self.damage_timer > 0.0 {
+                    0xFF0000
+                } else {
+                    self.texture[tex_index]
+                };
+                if colour != MAGIC_COLOUR {
+                    screen.draw_pixel(pixel_x as usize, pixel_y as usize, colour);
+                }
             }
         }
     }

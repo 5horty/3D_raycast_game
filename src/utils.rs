@@ -11,3 +11,9 @@ pub fn update_enemies(enemies: &mut Vec<Enemy>, delta_time: f32) {
         }
     }
 }
+
+pub fn test() {
+    for i in 0..10 {
+        println!("hello world");
+    }
+}
