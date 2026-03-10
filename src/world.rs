@@ -4,6 +4,7 @@ pub struct World {
     pub tiles: Vec<u8>,
 }
 impl World {
+    /// just a map impl for testing
     pub fn defualt() -> Self {
         Self {
             width: 10,

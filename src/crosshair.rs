@@ -1,6 +1,5 @@
 use crate::frames::Screen;
 use crate::player::Player;
-use crate::{hitscan, player};
 
 pub fn draw_crosshair(screen: &mut Screen, player: &Player) {
     let half_width = (0.03 * screen.width as f32 / player.fov) as usize;

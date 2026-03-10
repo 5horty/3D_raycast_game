@@ -5,3 +5,11 @@ edition = "2024"
 
 [dependencies]
 minifb = "0.28.0"
+
+[build]
+incremental = true
+
+[profile.dev]
+debug = 0
+incremental = true
+
