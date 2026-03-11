@@ -93,7 +93,7 @@ impl Sprite {
                 }
 
                 let tex_x = x * self.width / width_on_screen;
-                let tex_y = y * self.width / height_on_screen;
+                let tex_y = y * self.height / height_on_screen;
                 let tex_index = tex_y * self.width + tex_x;
 
                 let colour = if self.damage_timer > 0.0 {

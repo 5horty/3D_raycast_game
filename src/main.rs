@@ -1,6 +1,7 @@
 mod crosshair;
 mod enemies;
 mod frames;
+mod gun;
 mod hitscan;
 mod movement;
 mod player;
@@ -13,6 +14,7 @@ mod world;
 use crate::crosshair::draw_crosshair;
 use crate::enemies::Enemy;
 use crate::frames::Screen;
+use crate::gun::Gun;
 use crate::hitscan::{remove_dead_enemies, shoot};
 use crate::player::Player;
 use crate::ray::render;
@@ -49,6 +51,9 @@ fn main() {
     //enemies
     let mut enemy = vec![Enemy::defualt()];
 
+    //gun
+    let mut gun = Gun::new();
+
     // main loop
     while window.is_open() {
         let frame_start = Instant::now();
@@ -63,6 +68,7 @@ fn main() {
         );
         if window.is_key_pressed(Key::Space, KeyRepeat::No) {
             shoot(&player, &mut enemy, 10);
+            gun.shoot();
         }
 
         // clear screen
@@ -79,6 +85,8 @@ fn main() {
         update_enemies(&mut enemy, delta_time);
         remove_dead_enemies(&mut enemy);
         draw_crosshair(&mut screen, &player);
+        gun.update(delta_time);
+        gun.draw(&mut screen);
 
         // display buffer
         window
