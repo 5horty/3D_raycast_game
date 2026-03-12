@@ -45,7 +45,7 @@ fn main() {
     let target_frame_time = Duration::from_micros(33_333);
 
     // world and player
-    let world = World::defualt();
+    let mut world = World::defualt();
     let mut player = Player::defualt();
     let sprite = Sprite::defualt();
     //enemies
@@ -70,6 +70,12 @@ fn main() {
             shoot(&player, &mut enemy, 10);
             gun.shoot();
         }
+
+        if window.is_key_pressed(Key::E, KeyRepeat::No) {
+            world.interact(player.x_cord, player.y_cord, player.angle);
+        }
+
+        world.update_doors(delta_time);
 
         // clear screen
         screen.clear();
