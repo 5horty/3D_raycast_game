@@ -49,7 +49,7 @@ fn main() {
     let mut player = Player::defualt();
     let sprite = Sprite::defualt();
     //enemies
-    let mut enemy = vec![Enemy::defualt()];
+    let mut enemy = vec![Enemy::defualt(), Enemy::new(16.0, 16.0, 100)];
 
     //gun
     let mut gun = Gun::new();
@@ -68,6 +68,7 @@ fn main() {
         );
         if window.is_key_pressed(Key::Space, KeyRepeat::No) {
             shoot(&player, &mut enemy, 10);
+            // Scale gun to 60% of screen width 45% of screen height
             gun.shoot();
         }
 

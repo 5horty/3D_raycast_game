@@ -14,6 +14,14 @@ impl Enemy {
             hit_radius: 0.5,
         }
     }
+    pub fn new(x_cords: f32, y_cords: f32, health: i32) -> Self {
+        Self {
+            sprite: Sprite::new(x_cords, y_cords, basic_enemy_texture(), 100, 100, 0.0),
+            health,
+            hit_radius: 0.5,
+        }
+    }
+
     pub fn is_alive(&self) -> bool {
         self.health > 0
     }
